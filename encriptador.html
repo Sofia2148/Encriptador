@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Enriptador</title>
+        <link rel="stylesheet" href="assets/normalize.css">
+        <link rel="stylesheet" href="assets/style.css">
+    </head>
+    <body>
+        
+        <img src="image/a.png" alt="Logo alura" class="a">
+        
+        <section class="mensaje-usuario">
+            <div class="text">
+                <textarea name="texto-encriptar" placeholder="Introducir texto aqui" cols="35" rows="15"></textarea>
+            </div>
+            <br><br>
+            <div class="info">
+                <span>
+                    <img src="image/outline_info_black_24dp.png" alt="info">
+                    <p>Solo se aceptan letras minúsculas y sin acentos</p>
+                </span>
+            </div>
+            <div class="input-botones">
+                <button class="encriptar" id="encriptarjs">Encriptar</button>
+                <button class="desencriptar" id="desencriptarjs">Desencriptar</button>
+            </div>
+        </section>  
+        
+        <section class="mensaje-encriptado">
+            <div class="imagen">
+                <img src="image/buscando.png"> 
+            </div>
+            <h2>Ningun mensaje fue encontrado</h2>
+            <p>Ingresa el texto que desees encriptar o desencriptar</p>
+        </section>
+        
+        <script>
+            function encriptarTexto(texto) {
+                texto = texto.toLowerCase();
+                texto = texto.replace(/e/g, "enter");
+                texto = texto.replace(/i/g, "imes");
+                texto = texto.replace(/a/g, "ai");
+                texto = texto.replace(/o/g, "ober");
+                texto = texto.replace(/u/g, "ufat");
+                return texto;
+            }
+
+            function desencriptarTexto(texto) {
+                texto = texto.replace(/enter/g, "e");
+                texto = texto.replace(/imes/g, "i");
+                texto = texto.replace(/ai/g, "a");
+                texto = texto.replace(/ober/g, "o");
+                texto = texto.replace(/ufat/g, "u");
+                return texto;
+            }
+
+            function validarTexto(texto) {
+                let caracteres = /[~!@#$%^&*()_+|}{[\]\\\/?><:"`;.,áéíóúàèìòù']/g;
+                let mayusculas = /[A-Z]/g;
+                let vacio = "";
+
+                if (texto.match(mayusculas) || texto.match(caracteres)) {
+                    alert("No se permiten caracteres especiales ni mayúsculas");
+                    return true;
+                } else if (texto == vacio) {
+                    alert("Ingrese un mensaje para encriptar");
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            document.getElementById("encriptarjs").addEventListener("click", function() {
+                var textoEncriptar = document.querySelector("textarea").value;
+                if (!validarTexto(textoEncriptar)) {
+                    var textoEncriptado = encriptarTexto(textoEncriptar);
+                    var seccionEncriptado = document.querySelector(".mensaje-encriptado");
+                    seccionEncriptado.innerHTML = "";
+                    seccionEncriptado.innerHTML += '<h2>Mensaje Encriptado</h2>';
+                    seccionEncriptado.innerHTML += '<p class="copia">' + textoEncriptado + "</p>";
+                    seccionEncriptado.innerHTML += '<div class="copiar">' +
+                    '<input type="button" value="Copiar" id="copiado">' + '</div>';
+                    var copiarButton = document.querySelector(".copiar input[type='button']");
+                    copiarButton.addEventListener("click", function() {
+                        var textoCopiar = textoEncriptado;
+                        navigator.clipboard.writeText(textoCopiar)
+                    });
+                }
+            });
+
+            document.getElementById("desencriptarjs").addEventListener("click", function() {
+                var textoDesencriptar = document.querySelector("textarea").value;
+                if (!validarTexto(textoDesencriptar)) {
+                    var textoDesencriptado = desencriptarTexto(textoDesencriptar);
+                    var seccionEncriptado = document.querySelector(".mensaje-encriptado");
+                    seccionEncriptado.innerHTML = "";
+                    seccionEncriptado.innerHTML += '<h2>Mensaje Desencriptado</h2>';
+                    seccionEncriptado.innerHTML += '<p id="copia">' + textoDesencriptado + "</p>";
+                    seccionEncriptado.innerHTML += '<div class="copiar">' +
+                        '<input type="button" value="Copiar" id="copiado">' + '</div>';
+                    var copiarButton = document.querySelector(".copiar input[type='button']");
+                    copiarButton.addEventListener("click", function() {
+                        var textoCopiar = textoDesencriptado;
+                        navigator.clipboard.writeText(textoCopiar)
+                    });
+                }
+            });
+
+        </script>
+
+    </body>
+</html>
